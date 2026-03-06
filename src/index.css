@@ -1,0 +1,235 @@
+/* ═══════════════════════════════════════════
+   1. GOOGLE FONTS — must be first
+═══════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+
+/* ═══════════════════════════════════════════
+   2. TAILWIND
+═══════════════════════════════════════════ */
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════
+   3. THEME — fonts + colors
+═══════════════════════════════════════════ */
+@theme {
+  --font-teko:      "Teko", sans-serif;
+  --font-cormorant: "Cormorant Garamond", serif;
+  --font-geologica: "Geologica", sans-serif;
+}
+
+/* ═══════════════════════════════════════════
+   4. DAISYUI
+═══════════════════════════════════════════ */
+@plugin "daisyui" {
+  themes: medivo --default;
+}
+
+@plugin "daisyui/theme" {
+  name: "medivo";
+  default: true;
+
+  --color-primary:           #116878;
+  --color-primary-content:   #EEF8FA;
+  --color-secondary:         #1A2240;
+  --color-secondary-content: #F0F4FF;
+  --color-accent:            #22AACC;
+  --color-accent-content:    #030407;
+  --color-neutral:           #10152A;
+  --color-neutral-content:   #F0F4FF;
+  --color-base-100:          #090C16;
+  --color-base-200:          #0C1020;
+  --color-base-300:          #10152A;
+  --color-base-content:      #CCD0E0;
+  --color-info:              #3A5A9E;
+  --color-info-content:      #EEF2FF;
+  --color-success:           #1E8A70;
+  --color-success-content:   #EEFAF6;
+  --color-warning:           #8A6A30;
+  --color-warning-content:   #FBF4E8;
+  --color-error:             #9E4A60;
+  --color-error-content:     #FBF0F3;
+  --radius-selector:         100px;
+  --radius-field:            8px;
+  --radius-box:              16px;
+  --border:                  1px;
+}
+
+/* ═══════════════════════════════════════════
+   5. BASE — single merged block
+═══════════════════════════════════════════ */
+@layer base {
+  :root {
+    /* Obsidian Scale */
+    --ob-1000: #030407;
+    --ob-950:  #060810;
+    --ob-900:  #090C16;
+    --ob-850:  #0C1020;
+    --ob-800:  #10152A;
+    --ob-750:  #141A32;
+    --ob-700:  #1A2240;
+    --ob-600:  #222D54;
+    --ob-400:  #3A4870;
+
+    /* Prussian Teal Scale */
+    --pt-900: #062830;
+    --pt-800: #0A3C48;
+    --pt-700: #0E5060;
+    --pt-600: #116878;
+    --pt-500: #1688A0;
+    --pt-400: #22AACC;
+    --pt-300: #5EC8E0;
+    --pt-200: #A0DDE8;
+    --pt-100: #D8F0F5;
+    --pt-50:  #EEF8FA;
+
+    /* Text Opacity Scale */
+    --t100: rgba(240, 244, 255, 1.00);
+    --t80:  rgba(240, 244, 255, 0.80);
+    --t60:  rgba(240, 244, 255, 0.60);
+    --t40:  rgba(240, 244, 255, 0.40);
+    --t20:  rgba(240, 244, 255, 0.20);
+    --t10:  rgba(240, 244, 255, 0.10);
+    --t06:  rgba(240, 244, 255, 0.06);
+    --t03:  rgba(240, 244, 255, 0.03);
+
+    /* Borders */
+    --b1:      rgba(240, 244, 255, 0.06);
+    --b2:      rgba(240, 244, 255, 0.10);
+    --b3:      rgba(240, 244, 255, 0.16);
+    --b-teal:  rgba(22, 136, 160, 0.30);
+    --b-tealb: rgba(34, 170, 204, 0.45);
+
+    /* Glows */
+    --glow-pt:    0 0 40px rgba(22,136,160,0.20), 0 0 80px rgba(22,136,160,0.08);
+    --glow-pt-sm: 0 0 20px rgba(22,136,160,0.25);
+    --glow-pt-lg: 0 0 80px rgba(22,136,160,0.25), 0 0 160px rgba(22,136,160,0.10);
+
+    /* Shadows */
+    --sh-sm:   0 2px 8px rgba(3,4,7,0.40);
+    --sh-md:   0 8px 32px rgba(3,4,7,0.50), 0 2px 8px rgba(3,4,7,0.30);
+    --sh-lg:   0 24px 64px rgba(3,4,7,0.60), 0 8px 24px rgba(3,4,7,0.40);
+    --sh-xl:   0 48px 96px rgba(3,4,7,0.70), 0 16px 40px rgba(3,4,7,0.50);
+    --sh-teal: 0 8px 32px rgba(22,136,160,0.30), 0 2px 8px rgba(22,136,160,0.20);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #090C16; /* prevents white flash */
+  }
+
+  body {
+    font-family: "Geologica", sans-serif;
+    font-weight: 300;
+    background-color: #090C16;
+    color: rgba(240, 244, 255, 0.75);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 300;
+    color: #F0F4FF;
+    letter-spacing: 0.02em;
+  }
+
+  #root {
+    min-height: 100vh;
+    background-color: #090C16;
+    background-image:
+      radial-gradient(ellipse at 15% 0%,   rgba(6, 104, 120, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 100%, rgba(6, 40,  48,  0.20) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%,  rgba(10, 21, 42,  0.40) 0%, transparent 80%);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   6. COMPONENTS
+═══════════════════════════════════════════ */
+@layer components {
+
+  .membrane-top {
+    position: relative;
+  }
+  .membrane-top::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #1688A0 20%, #22AACC 50%, #1688A0 80%, transparent 100%);
+    box-shadow: 0 0 20px rgba(22,136,160,0.4);
+    z-index: 10;
+  }
+
+  .membrane-card {
+    background: var(--ob-800);
+    border: 1px solid var(--b1);
+    border-radius: 20px;
+    box-shadow: var(--sh-md);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .membrane-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--b-teal);
+    box-shadow: var(--sh-xl), var(--glow-pt-sm);
+  }
+  .membrane-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, #22AACC, transparent);
+    box-shadow: 0 0 20px rgba(22,136,160,0.4);
+    opacity: 0;
+    transition: opacity 0.4s;
+    z-index: 2;
+  }
+  .membrane-card:hover::before {
+    opacity: 1;
+  }
+
+  .teal-stroke {
+    color: transparent;
+    -webkit-text-stroke: 1px #22AACC;
+    filter: drop-shadow(0 0 12px rgba(34,170,204,0.6));
+  }
+
+  .dot-live {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #22AACC;
+    box-shadow: 0 0 8px #22AACC, 0 0 16px rgba(34,170,204,0.4);
+    animation: breathe 3s ease-in-out infinite;
+    display: inline-block;
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 1;   transform: scale(1);   }
+    50%       { opacity: 0.4; transform: scale(0.75); }
+  }
+
+  .sidebar-active {
+    background: linear-gradient(135deg, rgba(14,80,96,0.3), rgba(22,136,160,0.15));
+    border: 1px solid var(--b-teal);
+    color: #5EC8E0;
+    position: relative;
+  }
+  .sidebar-active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 20%; bottom: 20%; width: 2px;
+    background: #22AACC;
+    border-radius: 0 2px 2px 0;
+    box-shadow: 0 0 6px rgba(34,170,204,0.6);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   7. SCROLLBAR
+═══════════════════════════════════════════ */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: var(--ob-950); }
+::-webkit-scrollbar-thumb { background: var(--pt-700); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--pt-500); }
