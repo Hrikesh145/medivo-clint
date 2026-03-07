@@ -173,7 +173,7 @@ const Navbar = () => {
             {/* Desktop actions */}
             <div className="hidden lg:flex items-center gap-3">
               <Link
-                to="/join-us"
+                to="/login"
                 className="font-geologica uppercase tracking-[2px] text-[10px]
                            px-5 py-2 rounded-full transition-all duration-200"
                 style={{
