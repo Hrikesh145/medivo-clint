@@ -1,0 +1,382 @@
+/* ═══════════════════════════════════════
+   ADD CAMP PAGE
+═══════════════════════════════════════ */
+.add-camp {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ── header ── */
+.add-camp__header {
+  margin-bottom: 34px;
+  max-width: 760px;
+}
+
+.add-camp__tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.add-camp__tag-line {
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, #22aacc, transparent);
+}
+
+.add-camp__tag-text {
+  font-family: "Teko", sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #22aacc;
+}
+
+.add-camp__title {
+  margin: 0 0 10px;
+  font-family: "Teko", sans-serif;
+  font-size: 66px;
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.97);
+}
+
+.add-camp__subtitle {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(240, 244, 255, 0.42);
+}
+
+/* ── card ── */
+.add-camp__card {
+  background: rgba(16, 21, 42, 0.9);
+  border: 1px solid rgba(240, 244, 255, 0.06);
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+.add-camp__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #22aacc, transparent);
+  box-shadow: 0 0 20px rgba(34, 170, 204, 0.28);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ── form body ── */
+.add-camp__form {
+  padding: 42px 48px 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 34px 38px;
+}
+
+.add-camp__field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.add-camp__field--full {
+  grid-column: 1 / -1;
+}
+
+.add-camp__label {
+  font-family: "Teko", sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.22);
+}
+
+.add-camp__input-wrap {
+  position: relative;
+}
+
+.add-camp__input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(240, 244, 255, 0.12);
+  outline: none;
+  padding: 12px 0 11px;
+  font-family: "Geologica", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(240, 244, 255, 0.86);
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.add-camp__input::placeholder {
+  color: rgba(240, 244, 255, 0.18);
+}
+
+.add-camp__input:focus {
+  border-bottom-color: #22aacc;
+}
+
+.add-camp__input--error {
+  border-bottom-color: #9e4a60 !important;
+}
+
+.add-camp__input-glow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  width: 0;
+  background: linear-gradient(90deg, #22aacc, #5ec8e0);
+  box-shadow: 0 0 10px rgba(34, 170, 204, 0.5);
+  transition: width 0.35s ease;
+  pointer-events: none;
+}
+
+.add-camp__input:focus ~ .add-camp__input-glow {
+  width: 100%;
+}
+
+/* ── textarea ── */
+.add-camp__textarea {
+  width: 100%;
+  min-height: 130px;
+  box-sizing: border-box;
+  background: rgba(240, 244, 255, 0.02);
+  border: 1px solid rgba(240, 244, 255, 0.08);
+  border-radius: 14px;
+  outline: none;
+  padding: 16px 18px;
+  font-family: "Geologica", sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(240, 244, 255, 0.85);
+  resize: vertical;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.add-camp__textarea::placeholder {
+  color: rgba(240, 244, 255, 0.18);
+}
+
+.add-camp__textarea:focus {
+  border-color: rgba(34, 170, 204, 0.4);
+  background: rgba(34, 170, 204, 0.03);
+}
+
+.add-camp__textarea--error {
+  border-color: #9e4a60 !important;
+}
+
+/* ── error ── */
+.add-camp__error {
+  font-family: "Geologica", sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: #c46a80;
+}
+
+/* ── upload ── */
+.add-camp__file-input {
+  display: none;
+}
+
+.add-camp__upload {
+  width: 100%;
+  min-height: 170px;
+  box-sizing: border-box;
+  border: 1px dashed rgba(34, 170, 204, 0.26);
+  border-radius: 18px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  background: rgba(34, 170, 204, 0.02);
+  transition: all 0.25s ease;
+  text-align: center;
+}
+
+.add-camp__upload:hover {
+  border-color: rgba(34, 170, 204, 0.52);
+  background: rgba(34, 170, 204, 0.05);
+}
+
+.add-camp__upload--has-file {
+  border-color: rgba(34, 170, 204, 0.42);
+  background: rgba(34, 170, 204, 0.04);
+}
+
+.add-camp__upload-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(17, 104, 120, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.add-camp__upload-preview {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid rgba(34, 170, 204, 0.3);
+}
+
+.add-camp__upload-title {
+  font-family: "Teko", sans-serif;
+  font-size: 18px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.54);
+}
+
+.add-camp__upload-sub {
+  font-family: "Geologica", sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(240, 244, 255, 0.22);
+  letter-spacing: 1px;
+}
+
+/* ── footer ── */
+.add-camp__footer {
+  padding: 20px 48px 28px;
+  border-top: 1px solid rgba(240, 244, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.add-camp__btn-cancel {
+  padding: 11px 26px;
+  border-radius: 999px;
+  font-family: "Geologica", sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.4);
+  background: transparent;
+  border: 1px solid rgba(240, 244, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.add-camp__btn-cancel:hover {
+  color: rgba(240, 244, 255, 0.75);
+  border-color: rgba(240, 244, 255, 0.18);
+}
+
+.add-camp__btn-submit {
+  padding: 12px 34px;
+  border-radius: 999px;
+  font-family: "Geologica", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.96);
+  background: linear-gradient(135deg, #0e5060, #1688a0);
+  border: 1px solid rgba(34, 170, 204, 0.4);
+  box-shadow:
+    0 0 28px rgba(22, 136, 160, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.add-camp__btn-submit::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.07), transparent);
+  pointer-events: none;
+}
+
+.add-camp__btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 40px rgba(22, 136, 160, 0.45);
+}
+
+.add-camp__btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── responsive ── */
+@media (max-width: 1100px) {
+  .add-camp__title {
+    font-size: 56px;
+  }
+
+  .add-camp__form {
+    padding: 34px 30px 28px;
+    gap: 28px 26px;
+  }
+
+  .add-camp__footer {
+    padding: 18px 30px 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .add-camp__title {
+    font-size: 46px;
+  }
+
+  .add-camp__form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .add-camp__title {
+    font-size: 38px;
+    line-height: 1;
+  }
+
+  .add-camp__subtitle {
+    font-size: 16px;
+  }
+
+  .add-camp__form {
+    padding: 24px 18px 20px;
+  }
+
+  .add-camp__footer {
+    padding: 16px 18px 20px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-camp__btn-cancel,
+  .add-camp__btn-submit {
+    width: 100%;
+  }
+}

@@ -5,6 +5,8 @@ import AuthLayout from "../layouts/AuthLayout";
 import { Component } from "react";
 import Login from "../pages/Authentication/Login/Login";
 import Registration from "../pages/Authentication/Registration/Registration";
+import DashboardLayout from "../layouts/DashboardLayout";
+import AddCamp from "../pages/DashboardOrganizer/AddCamp/AddCamp";
 
 export const router = createBrowserRouter([
   {
@@ -31,4 +33,15 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:"/dashboard",
+    Component: DashboardLayout,
+    children:[
+      {
+        path:"add-camp",
+        Component: AddCamp,
+      }
+    ]
+
+  }
 ]);
