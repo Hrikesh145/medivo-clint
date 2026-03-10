@@ -7,6 +7,8 @@ import Login from "../pages/Authentication/Login/Login";
 import Registration from "../pages/Authentication/Registration/Registration";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AddCamp from "../pages/DashboardOrganizer/AddCamp/AddCamp";
+import ManageCamp from "../pages/DashboardOrganizer/ManageCamp/ManageCamp";
+import updateCamp from "../pages/DashboardOrganizer/updateCamp/updateCamp";
 
 export const router = createBrowserRouter([
   {
@@ -34,14 +36,21 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path:"/dashboard",
+    path: "/dashboard",
     Component: DashboardLayout,
-    children:[
+    children: [
       {
-        path:"add-camp",
+        path: "add-camp",
         Component: AddCamp,
-      }
-    ]
-
-  }
+      },
+      {
+        path: "manage-camps",
+        Component: ManageCamp,
+      },
+      {
+        path: "update-camp/:id", 
+        Component: updateCamp,
+      },
+    ],
+  },
 ]);

@@ -1,0 +1,468 @@
+/* ═══════════════════════════════════════
+   MANAGE CAMPS PAGE
+═══════════════════════════════════════ */
+.mc {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ── header ── */
+.mc__header {
+  margin-bottom: 32px;
+}
+
+.mc__tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.mc__tag-line {
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, #22aacc, transparent);
+}
+
+.mc__tag-text {
+  font-family: "Teko", sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #22aacc;
+}
+
+.mc__title {
+  margin: 0 0 8px;
+  font-family: "Teko", sans-serif;
+  font-size: 52px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.97);
+  line-height: 1;
+}
+
+.mc__subtitle {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 400;
+  color: rgba(240, 244, 255, 0.38);
+}
+
+/* ── stats ── */
+.mc__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.mc__stat {
+  background: #10152a;
+  border: 1px solid rgba(240, 244, 255, 0.06);
+  border-radius: 16px;
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mc__stat::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(34, 170, 204, 0.35), transparent);
+}
+
+.mc__stat-num {
+  font-family: "Teko", sans-serif;
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: rgba(240, 244, 255, 0.97);
+  line-height: 1;
+}
+
+.mc__stat-num--teal {
+  color: #22aacc;
+}
+
+.mc__stat-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.2);
+  margin-top: 5px;
+}
+
+/* ── table card ── */
+.mc__card {
+  background: #10152a;
+  border: 1px solid rgba(240, 244, 255, 0.06);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.mc__card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #22aacc, transparent);
+  box-shadow: 0 0 20px rgba(34, 170, 204, 0.25);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ── toolbar ── */
+.mc__toolbar {
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(240, 244, 255, 0.06);
+}
+
+.mc__search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(240, 244, 255, 0.04);
+  border: 1px solid rgba(240, 244, 255, 0.08);
+  border-radius: 100px;
+  padding: 9px 18px;
+  transition: border-color 0.2s;
+}
+
+.mc__search-wrap:focus-within {
+  border-color: rgba(34, 170, 204, 0.3);
+}
+
+.mc__search-icon {
+  opacity: 0.3;
+  flex-shrink: 0;
+}
+
+.mc__search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: "Geologica", sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(240, 244, 255, 0.8);
+  width: 200px;
+}
+
+.mc__search-input::placeholder {
+  color: rgba(240, 244, 255, 0.2);
+}
+
+.mc__total {
+  font-family: "Teko", sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.2);
+  background: rgba(240, 244, 255, 0.04);
+  border-radius: 100px;
+  padding: 6px 14px;
+}
+
+/* ── table ── */
+.mc__table-wrap {
+  overflow-x: auto;
+}
+
+.mc__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mc__table thead tr {
+  border-bottom: 1px solid rgba(240, 244, 255, 0.06);
+}
+
+.mc__table th {
+  padding: 13px 18px;
+  font-family: "Teko", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.2);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.mc__table th:last-child {
+  text-align: right;
+}
+
+.mc__table tbody tr {
+  border-bottom: 1px solid rgba(240, 244, 255, 0.04);
+  transition: background 0.2s;
+}
+
+.mc__table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.mc__table tbody tr:hover {
+  background: rgba(240, 244, 255, 0.02);
+}
+
+.mc__table td {
+  padding: 16px 18px;
+  vertical-align: middle;
+}
+
+/* ── camp cell ── */
+.mc__camp-cell {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mc__camp-thumb {
+  width: 56px;
+  height: 42px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(240, 244, 255, 0.08);
+  flex-shrink: 0;
+  background: #1a2240;
+}
+
+.mc__camp-thumb-placeholder {
+  width: 56px;
+  height: 42px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0e5060, #1a2240);
+  border: 1px solid rgba(240, 244, 255, 0.08);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mc__camp-name {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(240, 244, 255, 0.9);
+  margin-bottom: 3px;
+  white-space: nowrap;
+}
+
+.mc__camp-location {
+  font-size: 10px;
+  color: rgba(240, 244, 255, 0.22);
+  letter-spacing: 0.5px;
+}
+
+/* ── date cell ── */
+.mc__date-range {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mc__date-main {
+  font-size: 12px;
+  color: rgba(240, 244, 255, 0.75);
+  white-space: nowrap;
+}
+
+.mc__date-time {
+  font-size: 10px;
+  color: rgba(240, 244, 255, 0.25);
+}
+
+/* ── fees ── */
+.mc__fees-free {
+  font-family: "Teko", sans-serif;
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: #5ec8e0;
+}
+
+.mc__fees-paid {
+  font-family: "Teko", sans-serif;
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: rgba(240, 244, 255, 0.8);
+}
+
+/* ── participants ── */
+.mc__participants {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mc__participants-text {
+  font-size: 12px;
+  color: rgba(240, 244, 255, 0.75);
+  white-space: nowrap;
+}
+
+.mc__participants-text span {
+  color: #22aacc;
+  font-weight: 500;
+}
+
+.mc__progress {
+  width: 90px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(240, 244, 255, 0.06);
+  overflow: hidden;
+}
+
+.mc__progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #1688a0, #22aacc);
+  transition: width 0.4s ease;
+}
+
+.mc__progress-fill--full {
+  background: linear-gradient(90deg, #9e4a60, #c46a80);
+}
+
+/* ── badge ── */
+.mc__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mc__badge--active {
+  background: rgba(34, 170, 204, 0.08);
+  border: 1px solid rgba(34, 170, 204, 0.18);
+  color: #5ec8e0;
+}
+
+.mc__badge--full {
+  background: rgba(158, 74, 96, 0.1);
+  border: 1px solid rgba(158, 74, 96, 0.2);
+  color: #c46a80;
+}
+
+.mc__badge-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ── actions ── */
+.mc__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.mc__btn-edit {
+  padding: 7px 16px;
+  border-radius: 100px;
+  font-family: "Geologica", sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #5ec8e0;
+  background: rgba(34, 170, 204, 0.08);
+  border: 1px solid rgba(34, 170, 204, 0.2);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.mc__btn-edit:hover {
+  background: rgba(34, 170, 204, 0.15);
+  border-color: rgba(34, 170, 204, 0.4);
+}
+
+.mc__btn-delete {
+  padding: 7px 14px;
+  border-radius: 100px;
+  font-family: "Geologica", sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(196, 106, 128, 0.7);
+  background: transparent;
+  border: 1px solid rgba(158, 74, 96, 0.18);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mc__btn-delete:hover {
+  color: #c46a80;
+  background: rgba(158, 74, 96, 0.08);
+  border-color: rgba(158, 74, 96, 0.35);
+}
+
+/* ── empty state ── */
+.mc__empty {
+  padding: 70px;
+  text-align: center;
+}
+
+.mc__empty-title {
+  font-family: "Teko", sans-serif;
+  font-size: 22px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.15);
+  margin-bottom: 8px;
+}
+
+.mc__empty-sub {
+  font-size: 13px;
+  color: rgba(240, 244, 255, 0.1);
+}
+
+/* ── loading ── */
+.mc__loading {
+  padding: 70px;
+  text-align: center;
+  font-family: "Teko", sans-serif;
+  font-size: 16px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.15);
+}
+
+/* ── responsive ── */
+@media (max-width: 1100px) {
+  .mc__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mc__title {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 640px) {
+  .mc__title {
+    font-size: 34px;
+  }
+  .mc__stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
