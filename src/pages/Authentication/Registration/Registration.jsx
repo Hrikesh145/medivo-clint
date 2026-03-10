@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
-import { useForm } from 'react-hook-form';
-import './Registration.css';
-import Logo from '../../../components/shared/Logo/Logo';
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
+import Swal from "sweetalert2";
+import "./Registration.css";
+import Logo from "../../../components/shared/Logo/Logo";
+import useAuth from "../../../hooks/useAuth";
+import useAxios from "../../../hooks/useAxios";
+
+const IMGBB_KEY = import.meta.env.VITE_IMGBB_API_KEY;
 
 const Registration = () => {
-  const [showPass,     setShowPass]     = useState(false);
-  const [showConfirm,  setShowConfirm]  = useState(false);
-  const [preview,      setPreview]      = useState("");
+  const { createUser, updateUserProfile } = useAuth();
+  const axiosPublic = useAxios();
+
+  const [showPass,    setShowPass]    = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [imageFile,   setImageFile]   = useState(null);
+  const [preview,     setPreview]     = useState("");
+  const [uploading,   setUploading]   = useState(false);
+  const [imageUrl,    setImageUrl]    = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,20 +34,94 @@ const Registration = () => {
 
   const password = watch("password");
 
-  // ── simple preview only — imgbb upload comes later
   const handleImageSelect = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setImageFile(file);
     setPreview(URL.createObjectURL(file));
+    setImageUrl("");
   };
 
-  // ── TODO later: add imgbb upload + axios + createUser + updateUserProfile
-  const onSubmit = (data) => {
-    console.log("✅ Registration data →", data);
+  const uploadImage = async () => {
+    if (!imageFile) {
+      toast.error("Please select an image first");
+      return;
+    }
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append("image", imageFile);
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`,
+        { method: "POST", body: formData }
+      );
+      const data = await res.json();
+      setImageUrl(data.data.url);
+      toast.success("Photo uploaded");
+    } catch (err) {
+      toast.error("Upload failed. Try again.");
+      console.error(err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      // 1 — create firebase user
+      const userCredential = await createUser(data.email, data.password);
+      const user = userCredential.user;
+
+      // 2 — update firebase profile
+      await updateUserProfile({
+        displayName: data.name,
+        photoURL: imageUrl || "",
+      });
+
+      // 3 — save to mongodb
+      const userInfo = {
+        uid:       user.uid,
+        name:      data.name,
+        phone:     data.phone,
+        email:     user.email,
+        photoURL:  imageUrl || "",
+        createdAt: new Date().toISOString(),
+      };
+      await axiosPublic.post("/users", userInfo);
+
+      // 4 — success
+      Swal.fire({
+        title: "Account Created",
+        text: "Welcome to Medivo.",
+        icon: "success",
+        background: "#10152A",
+        color: "#F0F4FF",
+        confirmButtonColor: "#116878",
+        confirmButtonText: "Continue",
+      }).then(() => {
+        navigate(from, { replace: true });
+      });
+
+    } catch (error) {
+      console.error("error →", error.message);
+      toast.error(error.message);
+    }
   };
 
   return (
     <div className="reg">
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: "#10152A",
+            color: "#F0F4FF",
+            border: "1px solid rgba(34,170,204,0.2)",
+            fontFamily: "Geologica, sans-serif",
+            fontSize: "13px",
+          },
+        }}
+      />
 
       {/* logo */}
       <div className="reg__logo">
@@ -47,7 +133,7 @@ const Registration = () => {
 
       <form className="reg__form" onSubmit={handleSubmit(onSubmit)}>
 
-        {/* photo — preview only for now */}
+        {/* photo */}
         <div className="reg__field">
           <label className="reg__label">Profile Photo</label>
           <input
@@ -57,11 +143,17 @@ const Registration = () => {
             className="reg__file-input"
           />
           {preview && (
-            <img
-              src={preview}
-              alt="preview"
-              className="reg__photo-preview"
-            />
+            <img src={preview} alt="preview" className="reg__photo-preview" />
+          )}
+          {imageFile && (
+            <button
+              type="button"
+              onClick={uploadImage}
+              disabled={uploading || !!imageUrl}
+              className={`reg__upload-btn ${imageUrl ? "reg__upload-btn--done" : ""}`}
+            >
+              {uploading ? "Uploading..." : imageUrl ? "Uploaded" : "Upload Photo"}
+            </button>
           )}
         </div>
 
@@ -78,7 +170,9 @@ const Registration = () => {
               />
               <div className="reg__input-glow" />
             </div>
-            {errors.name && <span className="reg__error-msg">{errors.name.message}</span>}
+            {errors.name && (
+              <span className="reg__error-msg">{errors.name.message}</span>
+            )}
           </div>
 
           <div className="reg__field">
@@ -92,7 +186,9 @@ const Registration = () => {
               />
               <div className="reg__input-glow" />
             </div>
-            {errors.phone && <span className="reg__error-msg">{errors.phone.message}</span>}
+            {errors.phone && (
+              <span className="reg__error-msg">{errors.phone.message}</span>
+            )}
           </div>
         </div>
 
@@ -106,12 +202,17 @@ const Registration = () => {
               placeholder="your@email.com"
               {...register("email", {
                 required: "Email is required",
-                pattern: { value: /^\S+@\S+\.\S+$/, message: "Invalid email" },
+                pattern: {
+                  value: /^\S+@\S+\.\S+$/,
+                  message: "Invalid email",
+                },
               })}
             />
             <div className="reg__input-glow" />
           </div>
-          {errors.email && <span className="reg__error-msg">{errors.email.message}</span>}
+          {errors.email && (
+            <span className="reg__error-msg">{errors.email.message}</span>
+          )}
         </div>
 
         {/* password + confirm */}
@@ -137,7 +238,9 @@ const Registration = () => {
                 {showPass ? "HIDE" : "SHOW"}
               </button>
             </div>
-            {errors.password && <span className="reg__error-msg">{errors.password.message}</span>}
+            {errors.password && (
+              <span className="reg__error-msg">{errors.password.message}</span>
+            )}
           </div>
 
           <div className="reg__field">
@@ -161,12 +264,16 @@ const Registration = () => {
                 {showConfirm ? "HIDE" : "SHOW"}
               </button>
             </div>
-            {errors.confirmPassword && <span className="reg__error-msg">{errors.confirmPassword.message}</span>}
+            {errors.confirmPassword && (
+              <span className="reg__error-msg">
+                {errors.confirmPassword.message}
+              </span>
+            )}
           </div>
         </div>
 
         <button type="submit" className="reg__submit" disabled={isSubmitting}>
-          {isSubmitting ? "Creating Account..." : "Create Account →"}
+          {isSubmitting ? "Creating Account..." : "Create Account"}
         </button>
 
       </form>
@@ -191,7 +298,9 @@ const Registration = () => {
 
       <p className="reg__switch">
         Already have an account?{" "}
-        <Link to="/login" className="reg__switch-link">Sign In</Link>
+        <Link to="/login" className="reg__switch-link">
+          Sign In
+        </Link>
       </p>
 
     </div>
