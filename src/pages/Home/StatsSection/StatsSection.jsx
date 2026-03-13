@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import "./StatsSection.css";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL || "https://medivo-server.vercel.app";
 
 // Animated count-up hook
 const useCountUp = (target, duration = 1800, started = false) => {

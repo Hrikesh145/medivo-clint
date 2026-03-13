@@ -8,7 +8,7 @@ import "./PopularCamps.css";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL || "https://medivo-server.vercel.app";
 
 const formatDate = (iso) => {
   if (!iso) return "—";
