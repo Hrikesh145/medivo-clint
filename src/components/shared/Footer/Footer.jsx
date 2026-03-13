@@ -2,27 +2,6 @@ import React from "react";
 import { Link } from "react-router";
 import Logo from "../Logo/Logo";
 
-const LINKS = {
-  platform: [
-    { label: "Available Camps", to: "/available-camps" },
-    { label: "Join a Camp", to: "/available-camps" },
-    { label: "How It Works", to: "/how-it-works" },
-    { label: "About Us", to: "/about" },
-  ],
-  organizer: [
-    { label: "Add New Camp", to: "/dashboard/add-camp" },
-    { label: "Manage Camps", to: "/dashboard/manage-camps" },
-    { label: "Registered Users", to: "/dashboard/manage-registered-camps" },
-    { label: "Organizer Dashboard", to: "/dashboard" },
-  ],
-  participant: [
-    { label: "My Profile", to: "/dashboard/participant-profile" },
-    { label: "Registered Camps", to: "/dashboard/registered-camps" },
-    { label: "Payment History", to: "/dashboard/payment-history" },
-    { label: "Analytics", to: "/dashboard/analytics" },
-  ],
-};
-
 const SOCIALS = [
   {
     label: "Facebook",
@@ -79,7 +58,14 @@ const Footer = () => {
     { icon: "📍", text: "Dhaka, Bangladesh" },
   ];
 
-  const bottomLinks = [
+  const quickLinks = [
+    { label: "Home", to: "/" },
+    { label: "Available Camps", to: "/available-camps" },
+    { label: "About Us", to: "/about" },
+
+  ];
+
+  const legalLinks = [
     { label: "Privacy Policy", to: "/privacy" },
     { label: "Terms of Use", to: "/terms" },
     { label: "Contact", to: "/contact" },
@@ -89,81 +75,71 @@ const Footer = () => {
     <footer
       className="relative w-full mt-20 overflow-hidden rounded-t-2xl sm:rounded-t-3xl"
       style={{
-        background: "rgba(5,7,14,0.95)",
+        background:
+          "linear-gradient(180deg, rgba(7,10,18,0.96) 0%, rgba(4,6,12,1) 100%)",
         borderTop: "1px solid rgba(240,244,255,0.06)",
       }}
     >
-      {/* top membrane line */}
+      {/* top glow line */}
       <div
         className="absolute top-0 left-0 right-0 h-px pointer-events-none"
         style={{
           background:
             "linear-gradient(90deg,transparent 0%,#1688A0 20%,#22AACC 50%,#1688A0 80%,transparent 100%)",
-          boxShadow: "0 0 20px rgba(22,136,160,0.4)",
+          boxShadow: "0 0 20px rgba(22,136,160,0.35)",
         }}
       />
 
-      {/* ambient glow */}
+      {/* ambient glows */}
       <div
-        className="absolute top-0 left-0 w-[500px] h-[300px] pointer-events-none"
+        className="absolute -top-10 -left-10 w-[420px] h-[260px] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse,rgba(14,80,96,0.12),transparent 70%)",
+            "radial-gradient(circle, rgba(22,136,160,0.14), transparent 70%)",
+        }}
+      />
+      <div
+        className="absolute bottom-0 right-0 w-[360px] h-[220px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(34,170,204,0.10), transparent 70%)",
         }}
       />
 
-      {/* scan lines */}
+      {/* soft grid texture */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-40"
+        className="absolute inset-0 pointer-events-none opacity-30"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(240,244,255,0.008) 2px,rgba(240,244,255,0.008) 3px)",
+            "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+          maskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.2))",
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 pt-14 pb-0">
-        {/* top row */}
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 pt-14 pb-6">
+        {/* main section */}
         <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 pb-12"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 pb-12"
           style={{ borderBottom: "1px solid rgba(240,244,255,0.06)" }}
         >
-          {/* brand column */}
-          <div className="lg:col-span-2 flex flex-col gap-5">
-            <Link to="/">
+          {/* brand */}
+          <div className="flex flex-col gap-5">
+            <Link to="/" className="w-fit">
               <Logo size="md" />
             </Link>
 
             <p
-              className="font-geologica font-light leading-relaxed max-w-xs"
-              style={{ fontSize: "13px", color: "rgba(240,244,255,0.38)" }}
+              className="font-geologica font-light leading-relaxed max-w-sm"
+              style={{ fontSize: "13px", color: "rgba(240,244,255,0.40)" }}
             >
-              A premium medical camp management system — connecting communities
-              with certified physicians through organized, accessible, and
-              life-changing healthcare camps.
+              Medivo is a modern medical camp management platform connecting
+              communities with trusted healthcare services through organized,
+              accessible, and impactful care experiences.
             </p>
 
-            <div className="flex flex-col gap-3 mt-1">
-              {contactItems.map((item) => (
-                <div
-                  key={item.text}
-                  className="flex items-center gap-3 font-geologica font-light"
-                  style={{ fontSize: "12px", color: "rgba(240,244,255,0.30)" }}
-                >
-                  <span
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-[12px] shrink-0"
-                    style={{
-                      background: "rgba(22,136,160,0.10)",
-                      border: "1px solid rgba(34,170,204,0.15)",
-                    }}
-                  >
-                    {item.icon}
-                  </span>
-                  {item.text}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex gap-3 mt-2">
+            <div className="flex gap-3 pt-1">
               {SOCIALS.map((s) => (
                 <a
                   key={s.label}
@@ -171,26 +147,28 @@ const Footer = () => {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={s.label}
-                  className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300"
                   style={{
                     background: "rgba(240,244,255,0.04)",
                     border: "1px solid rgba(240,244,255,0.08)",
-                    color: "rgba(240,244,255,0.40)",
+                    color: "rgba(240,244,255,0.42)",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "rgba(22,136,160,0.15)";
+                    e.currentTarget.style.background = "rgba(22,136,160,0.14)";
                     e.currentTarget.style.borderColor =
-                      "rgba(34,170,204,0.35)";
+                      "rgba(34,170,204,0.30)";
                     e.currentTarget.style.color = "#5EC8E0";
+                    e.currentTarget.style.transform = "translateY(-2px)";
                     e.currentTarget.style.boxShadow =
-                      "0 0 16px rgba(22,136,160,0.2)";
+                      "0 0 18px rgba(22,136,160,0.18)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background =
                       "rgba(240,244,255,0.04)";
                     e.currentTarget.style.borderColor =
                       "rgba(240,244,255,0.08)";
-                    e.currentTarget.style.color = "rgba(240,244,255,0.40)";
+                    e.currentTarget.style.color = "rgba(240,244,255,0.42)";
+                    e.currentTarget.style.transform = "translateY(0)";
                     e.currentTarget.style.boxShadow = "none";
                   }}
                 >
@@ -200,150 +178,141 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* link columns */}
-          {[
-            { heading: "Platform", links: LINKS.platform },
-            { heading: "Organizer", links: LINKS.organizer },
-            { heading: "Participant", links: LINKS.participant },
-          ].map((col) => (
-            <div key={col.heading} className="flex flex-col gap-5">
-              <div className="flex items-center gap-3">
-                <span
-                  className="w-5 h-px"
-                  style={{
-                    background: "linear-gradient(90deg,#22AACC,transparent)",
-                  }}
-                />
-                <span
-                  className="font-teko text-[12px] tracking-[4px] uppercase"
-                  style={{ color: "#22AACC" }}
-                >
-                  {col.heading}
-                </span>
-              </div>
-
-              <ul className="flex flex-col gap-[10px]">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      to={link.to}
-                      className="font-geologica font-light transition-colors duration-200 flex items-center gap-2 group"
-                      style={{
-                        fontSize: "13px",
-                        color: "rgba(240,244,255,0.35)",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = "rgba(240,244,255,0.80)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = "rgba(240,244,255,0.35)";
-                      }}
-                    >
-                      <span
-                        className="text-[10px] transition-all duration-200 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0"
-                        style={{ color: "#22AACC" }}
-                      >
-                        →
-                      </span>
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          {/* quick links */}
+          <div className="flex flex-col gap-5">
+            <div className="flex items-center gap-3">
+              <span
+                className="w-6 h-px"
+                style={{
+                  background: "linear-gradient(90deg,#22AACC,transparent)",
+                }}
+              />
+              <span
+                className="font-teko text-[13px] tracking-[4px] uppercase"
+                style={{ color: "#22AACC" }}
+              >
+                Quick Links
+              </span>
             </div>
-          ))}
-        </div>
 
-        {/* newsletter */}
-        <div
-          className="py-8 flex flex-col sm:flex-row items-start sm:items-center gap-5 justify-between"
-          style={{ borderBottom: "1px solid rgba(240,244,255,0.06)" }}
-        >
-          <div>
-            <p
-              className="font-teko text-[14px] tracking-[3px] uppercase mb-1"
-              style={{ color: "rgba(240,244,255,0.70)" }}
-            >
-              Stay Updated
-            </p>
-            <p
-              className="font-geologica font-light"
-              style={{ fontSize: "12px", color: "rgba(240,244,255,0.28)" }}
-            >
-              Get notified when new camps are available near you.
-            </p>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
+              {quickLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    className="font-geologica font-light transition-colors duration-200 flex items-center gap-2 group"
+                    style={{
+                      fontSize: "13px",
+                      color: "rgba(240,244,255,0.38)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = "rgba(240,244,255,0.82)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "rgba(240,244,255,0.38)";
+                    }}
+                  >
+                    <span
+                      className="text-[10px] opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0"
+                      style={{ color: "#22AACC" }}
+                    >
+                      →
+                    </span>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="flex gap-2 w-full sm:w-auto">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="flex-1 sm:w-64 px-4 py-[10px] rounded-full font-geologica font-light text-[12px] outline-none transition-all duration-200"
+          {/* contact */}
+          <div className="flex flex-col gap-5">
+            <div className="flex items-center gap-3">
+              <span
+                className="w-6 h-px"
+                style={{
+                  background: "linear-gradient(90deg,#22AACC,transparent)",
+                }}
+              />
+              <span
+                className="font-teko text-[13px] tracking-[4px] uppercase"
+                style={{ color: "#22AACC" }}
+              >
+                Contact
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              {contactItems.map((item) => (
+                <div
+                  key={item.text}
+                  className="flex items-center gap-3 font-geologica font-light"
+                  style={{ fontSize: "13px", color: "rgba(240,244,255,0.34)" }}
+                >
+                  <span
+                    className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                    style={{
+                      background: "rgba(22,136,160,0.10)",
+                      border: "1px solid rgba(34,170,204,0.14)",
+                    }}
+                  >
+                    {item.icon}
+                  </span>
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </div>
+
+            <div
+              className="rounded-2xl p-4 mt-1"
               style={{
-                background: "rgba(240,244,255,0.04)",
-                border: "1px solid rgba(240,244,255,0.08)",
-                color: "rgba(240,244,255,0.7)",
-                fontFamily: "'Geologica', sans-serif",
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = "rgba(34,170,204,0.4)";
-                e.target.style.background = "rgba(22,136,160,0.08)";
-                e.target.style.boxShadow = "0 0 0 3px rgba(22,136,160,0.08)";
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = "rgba(240,244,255,0.08)";
-                e.target.style.background = "rgba(240,244,255,0.04)";
-                e.target.style.boxShadow = "none";
-              }}
-            />
-            <button
-              className="px-6 py-[10px] rounded-full font-geologica font-semibold text-[11px] uppercase tracking-[2px] shrink-0 transition-all duration-300 hover:-translate-y-[1px]"
-              style={{
-                background: "linear-gradient(135deg,#0E5060,#1688A0)",
-                border: "1px solid rgba(34,170,204,0.4)",
-                color: "rgba(240,244,255,0.95)",
-                boxShadow: "0 0 20px rgba(22,136,160,0.25)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow =
-                  "0 0 36px rgba(22,136,160,0.5)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow =
-                  "0 0 20px rgba(22,136,160,0.25)";
+                background: "rgba(240,244,255,0.03)",
+                border: "1px solid rgba(240,244,255,0.06)",
               }}
             >
-              Notify Me
-            </button>
+              <p
+                className="font-teko uppercase tracking-[3px] mb-2"
+                style={{ fontSize: "12px", color: "rgba(240,244,255,0.72)" }}
+              >
+                Care With Access
+              </p>
+              <p
+                className="font-geologica font-light leading-relaxed"
+                style={{ fontSize: "12px", color: "rgba(240,244,255,0.28)" }}
+              >
+                Helping patients discover nearby medical camps and giving
+                organizers the tools to manage healthcare outreach smoothly.
+              </p>
+            </div>
           </div>
         </div>
 
         {/* bottom bar */}
-        <div className="py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="pt-5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p
-            className="font-geologica font-light text-center sm:text-left"
+            className="font-geologica font-light text-center md:text-left"
             style={{ fontSize: "11px", color: "rgba(240,244,255,0.20)" }}
           >
             © {new Date().getFullYear()} Medivo. All rights reserved.
           </p>
 
-          <div className="flex items-center gap-5">
-            {bottomLinks.map((item, i) => (
+          <div className="flex items-center gap-5 flex-wrap justify-center">
+            {legalLinks.map((item, i) => (
               <React.Fragment key={item.label}>
                 <Link
                   to={item.to}
                   className="font-geologica font-light transition-colors duration-200"
-                  style={{ fontSize: "11px", color: "rgba(240,244,255,0.22)" }}
+                  style={{ fontSize: "11px", color: "rgba(240,244,255,0.24)" }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = "rgba(240,244,255,0.60)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "rgba(240,244,255,0.22)";
+                    e.currentTarget.style.color = "rgba(240,244,255,0.24)";
                   }}
                 >
                   {item.label}
                 </Link>
-                {i < bottomLinks.length - 1 && (
+                {i < legalLinks.length - 1 && (
                   <span
                     style={{
                       color: "rgba(240,244,255,0.10)",
@@ -358,7 +327,7 @@ const Footer = () => {
           </div>
 
           <p
-            className="font-geologica font-light"
+            className="font-geologica font-light text-center md:text-right"
             style={{ fontSize: "11px", color: "rgba(240,244,255,0.15)" }}
           >
             Built with <span style={{ color: "#22AACC" }}>♥</span> using React &

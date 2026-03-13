@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router";
 
 const BG_IMAGE =
   "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=1800&q=80";
@@ -18,20 +19,19 @@ const featuredCamp = {
 };
 
 const STATS = [
-  { val: "10K+", lbl: "Participants",  desc: "Across all camps"    },
-  { val: "250+", lbl: "Camps Held",    desc: "Nationwide coverage" },
-  { val: "98%",  lbl: "Satisfaction",  desc: "Post-camp surveys"   },
-  { val: "4.9★", lbl: "Avg Rating",    desc: "Verified reviews"    },
+  { val: "10K+", lbl: "Participants", desc: "Across all camps" },
+  { val: "250+", lbl: "Camps Held", desc: "Nationwide coverage" },
+  { val: "98%", lbl: "Satisfaction", desc: "Post-camp surveys" },
+  { val: "4.9★", lbl: "Avg Rating", desc: "Verified reviews" },
 ];
 
 const META = [
-  { icon: "📅", key: "date"     },
+  { icon: "📅", key: "date" },
   { icon: "📍", key: "location" },
   { icon: "👨‍⚕️", key: "doctor", suffix: (c) => ` · ${c.specialty}` },
 ];
 
 const Banner = () => {
-
   // ── TODO: replace with useForm() from react-hook-form
   const [form, setForm] = useState({ name: "", phone: "" });
 
@@ -128,10 +128,8 @@ const Banner = () => {
                    px-5 sm:px-10 lg:px-16 xl:px-20
                    pt-28 sm:pt-32 pb-36 sm:pb-44"
       >
-
         {/* ── LEFT ── */}
         <div className="flex flex-col">
-
           {/* signal */}
           <div className="inline-flex items-center gap-3 mb-10">
             <span
@@ -144,7 +142,9 @@ const Banner = () => {
             />
             <span
               className="w-9 h-px shrink-0"
-              style={{ background: "linear-gradient(90deg,#22AACC,transparent)" }}
+              style={{
+                background: "linear-gradient(90deg,#22AACC,transparent)",
+              }}
             />
             <span
               className="font-teko text-[12px] tracking-[4px] uppercase"
@@ -157,7 +157,10 @@ const Banner = () => {
           {/* headline */}
           <h1
             className="font-teko font-light uppercase leading-[0.88] mb-6"
-            style={{ fontSize: "clamp(58px,7.5vw,118px)", letterSpacing: "4px" }}
+            style={{
+              fontSize: "clamp(58px,7.5vw,118px)",
+              letterSpacing: "4px",
+            }}
           >
             {["WHERE", "CARE", "MEETS", "SCIENCE"].map((word, i) =>
               i % 2 === 0 ? (
@@ -180,7 +183,7 @@ const Banner = () => {
                 >
                   {word}
                 </span>
-              )
+              ),
             )}
           </h1>
 
@@ -199,16 +202,16 @@ const Banner = () => {
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-3">
-            <button
-              className="font-geologica text-[11px] font-semibold uppercase
-                         tracking-[2px] px-8 py-[13px] rounded-full
-                         transition-all duration-300 hover:-translate-y-[2px]"
+            <Link
+              to="/available-camps"
+              className="font-geologica text-[11px] font-semibold uppercase tracking-[2px] px-8 py-[13px] rounded-full transition-all duration-300 hover:-translate-y-[2px] inline-flex items-center justify-center"
               style={{
                 background: "linear-gradient(135deg,#0E5060,#1688A0)",
                 color: "rgba(240,244,255,1)",
                 border: "1px solid rgba(34,170,204,0.4)",
                 boxShadow:
                   "0 0 28px rgba(22,136,160,0.3),inset 0 1px 0 rgba(255,255,255,0.08)",
+                textDecoration: "none",
               }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.boxShadow =
@@ -220,15 +223,16 @@ const Banner = () => {
               }
             >
               Explore All Camps →
-            </button>
-            <button
-              className="font-geologica text-[11px] font-light uppercase
-                         tracking-[2px] px-8 py-[13px] rounded-full
-                         transition-all duration-300"
+            </Link>
+
+            <Link
+              to="/about"
+              className="font-geologica text-[11px] font-light uppercase tracking-[2px] px-8 py-[13px] rounded-full transition-all duration-300 inline-flex items-center justify-center"
               style={{
                 background: "rgba(240,244,255,0.04)",
                 color: "rgba(240,244,255,0.45)",
                 border: "1px solid rgba(240,244,255,0.10)",
+                textDecoration: "none",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "rgba(240,244,255,0.08)";
@@ -240,239 +244,7 @@ const Banner = () => {
               }}
             >
               How It Works
-            </button>
-          </div>
-        </div>
-
-        {/* ── RIGHT — GLASS CAMP CARD ── */}
-        <div className="flex justify-center lg:justify-end items-center">
-          <div
-            className="w-full max-w-[400px] rounded-[22px] overflow-hidden relative"
-            style={{
-              background: "rgba(10,15,32,0.72)",
-              backdropFilter: "blur(32px) saturate(160%)",
-              WebkitBackdropFilter: "blur(32px) saturate(160%)",
-              border: "1px solid rgba(240,244,255,0.09)",
-              boxShadow:
-                "0 32px 80px rgba(3,4,7,0.7),0 8px 24px rgba(3,4,7,0.5)",
-              animation: "floatCard 6s ease-in-out infinite",
-            }}
-          >
-            {/* card top membrane */}
-            <div
-              className="absolute top-0 left-0 right-0 h-px z-[2] pointer-events-none"
-              style={{
-                background:
-                  "linear-gradient(90deg,transparent,#22AACC,transparent)",
-                boxShadow: "0 0 16px rgba(34,170,204,0.5)",
-              }}
-            />
-
-            {/* ambient glow */}
-            <div
-              className="absolute inset-0 pointer-events-none z-[0]"
-              style={{
-                background:
-                  "radial-gradient(ellipse at top left,rgba(14,80,96,0.15),transparent 60%)",
-              }}
-            />
-
-            {/* header image */}
-            <div
-              className="relative h-[140px] overflow-hidden flex items-end p-4"
-              style={{
-                backgroundImage: `linear-gradient(135deg,rgba(6,40,48,0.9),rgba(14,80,96,0.7)),url(${CARD_IMAGE})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(-45deg,transparent,transparent 16px,rgba(34,170,204,0.03) 16px,rgba(34,170,204,0.03) 17px)",
-                }}
-              />
-              <div className="relative z-[1] flex items-center gap-2 flex-1">
-                <span
-                  className="w-[5px] h-[5px] rounded-full shrink-0"
-                  style={{
-                    background: "#22AACC",
-                    boxShadow: "0 0 6px #22AACC",
-                    animation: "breathe 2s ease-in-out infinite",
-                  }}
-                />
-                <span
-                  className="font-teko text-[11px] tracking-[3px] uppercase"
-                  style={{ color: "#5EC8E0" }}
-                >
-                  Featured Camp
-                </span>
-                <div
-                  className="ml-auto font-teko text-[14px] tracking-[1px] px-3 py-1 rounded-full"
-                  style={{
-                    background: "rgba(3,4,7,0.8)",
-                    border: "1px solid rgba(34,170,204,0.3)",
-                    color: "#5EC8E0",
-                  }}
-                >
-                  ${featuredCamp.fee}
-                </div>
-              </div>
-            </div>
-
-            {/* body */}
-            <div className="relative z-[1] px-5 pt-5 pb-4">
-              <h3
-                className="font-cormorant font-light mb-4 leading-snug"
-                style={{
-                  fontSize: "18px",
-                  color: "rgba(240,244,255,0.92)",
-                  letterSpacing: "0.3px",
-                }}
-              >
-                {featuredCamp.title}
-              </h3>
-
-              {/* meta */}
-              <div className="flex flex-col gap-2 mb-4">
-                {META.map(({ icon, key, suffix }) => (
-                  <div
-                    key={key}
-                    className="flex items-center gap-[10px] text-[12px] font-light"
-                    style={{ color: "rgba(240,244,255,0.40)" }}
-                  >
-                    <span
-                      className="w-[22px] h-[22px] rounded-[6px] flex items-center
-                                 justify-center text-[10px] shrink-0"
-                      style={{
-                        background: "rgba(22,136,160,0.10)",
-                        border: "1px solid rgba(34,170,204,0.15)",
-                      }}
-                    >
-                      {icon}
-                    </span>
-                    {featuredCamp[key]}
-                    {suffix?.(featuredCamp)}
-                  </div>
-                ))}
-              </div>
-
-              {/* divider */}
-              <div
-                className="h-px mb-4"
-                style={{
-                  background:
-                    "linear-gradient(90deg,rgba(34,170,204,0.2),rgba(240,244,255,0.04),transparent)",
-                }}
-              />
-
-              {/* quick registration form
-                  ── TODO: replace useState + handleRegister with:
-                     const { register, handleSubmit } = useForm()
-                     const { mutate } = useMutation(data => axios.post('/registrations', data))
-              */}
-              <form onSubmit={handleRegister} className="flex flex-col gap-3">
-                <span
-                  className="font-teko text-[11px] tracking-[3px] uppercase"
-                  style={{ color: "rgba(240,244,255,0.25)" }}
-                >
-                  Quick Registration
-                </span>
-                <div className="grid grid-cols-2 gap-2">
-                  {[
-                    { name: "name",  placeholder: "Full Name" },
-                    { name: "phone", placeholder: "Phone"     },
-                  ].map((field) => (
-                    <input
-                      key={field.name}
-                      name={field.name}
-                      value={form[field.name]}
-                      onChange={handleChange}
-                      placeholder={field.placeholder}
-                      // ── TODO: replace with {...register(field.name, { required: true })}
-                      className="px-3 py-[9px] rounded-lg text-[12px]
-                                 font-light outline-none transition-all duration-200"
-                      style={{
-                        background: "rgba(240,244,255,0.04)",
-                        border: "1px solid rgba(240,244,255,0.08)",
-                        color: "rgba(240,244,255,0.7)",
-                        fontFamily: "'Geologica', sans-serif",
-                      }}
-                      onFocus={(e) => {
-                        e.target.style.borderColor = "rgba(34,170,204,0.4)";
-                        e.target.style.background  = "rgba(22,136,160,0.08)";
-                        e.target.style.boxShadow   = "0 0 0 3px rgba(22,136,160,0.10)";
-                      }}
-                      onBlur={(e) => {
-                        e.target.style.borderColor = "rgba(240,244,255,0.08)";
-                        e.target.style.background  = "rgba(240,244,255,0.04)";
-                        e.target.style.boxShadow   = "none";
-                      }}
-                    />
-                  ))}
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-[11px] rounded-lg font-geologica text-[11px]
-                             font-semibold uppercase tracking-[2px]
-                             transition-all duration-300 hover:-translate-y-[1px]"
-                  style={{
-                    background: "linear-gradient(135deg,#0E5060,#1688A0)",
-                    border: "1px solid rgba(34,170,204,0.35)",
-                    color: "rgba(240,244,255,0.95)",
-                    boxShadow:
-                      "0 0 20px rgba(22,136,160,0.2),inset 0 1px 0 rgba(255,255,255,0.06)",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.boxShadow =
-                      "0 0 36px rgba(22,136,160,0.45)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.boxShadow =
-                      "0 0 20px rgba(22,136,160,0.2),inset 0 1px 0 rgba(255,255,255,0.06)")
-                  }
-                >
-                  Register Now →
-                </button>
-              </form>
-            </div>
-
-            {/* footer */}
-            <div
-              className="relative z-[1] px-5 py-3 flex items-center justify-between"
-              style={{
-                borderTop: "1px solid rgba(240,244,255,0.05)",
-                background: "rgba(3,4,7,0.3)",
-              }}
-            >
-              <div className="flex">
-                {["J", "A", "R", "+"].map((av, i) => (
-                  <div
-                    key={i}
-                    className="w-6 h-6 rounded-full flex items-center
-                               justify-center text-[10px] font-medium"
-                    style={{
-                      background: "linear-gradient(135deg,#0E5060,#1688A0)",
-                      border: "1.5px solid rgba(3,4,7,0.8)",
-                      color: "rgba(240,244,255,0.8)",
-                      marginLeft: i === 0 ? 0 : "-6px",
-                    }}
-                  >
-                    {av}
-                  </div>
-                ))}
-              </div>
-              <span
-                className="font-geologica text-[11px] font-light"
-                style={{ color: "rgba(240,244,255,0.35)" }}
-              >
-                <span style={{ color: "#5EC8E0", fontWeight: 500 }}>
-                  {featuredCamp.registered}
-                </span>{" "}
-                already registered
-              </span>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

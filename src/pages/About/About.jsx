@@ -101,9 +101,6 @@ const About = () => {
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </Link>
-            <Link to="/register" className="ab__btn ab__btn--ghost">
-              Join as Organizer
-            </Link>
           </div>
         </div>
 
@@ -244,9 +241,6 @@ const About = () => {
           <div className="ab__cta-btns">
             <Link to="/available-camps" className="ab__btn ab__btn--primary">
               Browse Camps
-            </Link>
-            <Link to="/register" className="ab__btn ab__btn--outline">
-              Create Account
             </Link>
           </div>
         </div>
