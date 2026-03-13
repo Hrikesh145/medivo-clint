@@ -655,3 +655,42 @@
   .ac__stats { gap: 20px; }
   .ac__layout-toggle { display: none; }
 }
+
+/* ── new stat colors */
+.ac__stat-num--green  { color: #5ed4a0; }
+.ac__stat-num--purple { color: #c09af0; }
+ 
+/* ── joined card subtle highlight */
+.ac__card--joined {
+  border-color: rgba(94, 212, 160, 0.15);
+}
+.ac__card--joined::before {
+  background: linear-gradient(90deg, transparent, rgba(94,212,160,0.3), transparent);
+}
+ 
+/* ── joined status badge */
+.ac__card-status--joined {
+  background: rgba(94, 212, 160, 0.12);
+  border: 1px solid rgba(94, 212, 160, 0.25);
+  color: #5ed4a0;
+}
+.ac__card-status--joined .ac__card-status-dot {
+  background: #5ed4a0;
+  box-shadow: 0 0 6px #5ed4a0;
+}
+ 
+/* ── joined button */
+.ac__btn-join--joined {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(94, 212, 160, 0.08);
+  border: 1px solid rgba(94, 212, 160, 0.25);
+  color: #5ed4a0;
+  cursor: pointer;
+}
+.ac__btn-join--joined:hover {
+  background: rgba(94, 212, 160, 0.14);
+  border-color: rgba(94, 212, 160, 0.4);
+  transform: translateY(-1px);
+}

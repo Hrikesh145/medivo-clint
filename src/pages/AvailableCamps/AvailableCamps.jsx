@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -35,12 +36,14 @@ const SkeletonCard = () => (
 const AvailableCamps = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [search,  setSearch]  = useState("");
   const [sort,    setSort]    = useState("most-registered");
   const [layout,  setLayout]  = useState(3);
 
-  // fetch all camps
+  // ── fetch all camps
   const { data: camps = [], isLoading } = useQuery({
     queryKey: ["camps"],
     queryFn: async () => {
@@ -49,11 +52,28 @@ const AvailableCamps = () => {
     },
   });
 
-  // filter + sort
+  // ── fetch participant's own registrations to know which camps are already joined
+  const { data: myRegistrations = [] } = useQuery({
+    queryKey: ["my-registrations", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/registrations?participantEmail=${user.email}`);
+      return res.data;
+    },
+    enabled: !!user?.email,
+  });
+
+  // set of campIds already joined (non-cancelled)
+  const joinedCampIds = useMemo(() => {
+    return new Set(
+      myRegistrations
+        .filter((r) => r.status !== "cancelled")
+        .map((r) => r.campId)
+    );
+  }, [myRegistrations]);
+
+  // ── filter + sort
   const displayed = useMemo(() => {
     let list = [...camps];
-
-    // search
     if (search.trim()) {
       const q = search.toLowerCase();
       list = list.filter(
@@ -63,8 +83,6 @@ const AvailableCamps = () => {
           c.healthcareProfessional?.toLowerCase().includes(q)
       );
     }
-
-    // sort
     if (sort === "most-registered") {
       list.sort((a, b) => (b.participantCount || 0) - (a.participantCount || 0));
     } else if (sort === "lowest-fees") {
@@ -74,24 +92,20 @@ const AvailableCamps = () => {
     } else if (sort === "newest") {
       list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
-
     return list;
   }, [camps, search, sort]);
 
-  // stats
-  const activeCamps = camps.filter(
-    (c) => c.participantCount < c.maxParticipants
-  ).length;
-  const totalParticipants = camps.reduce(
-    (sum, c) => sum + (c.participantCount || 0), 0
-  );
+  // ── stats
+  const activeCamps      = camps.filter((c) => c.participantCount < c.maxParticipants).length;
+  const totalParticipants = camps.reduce((sum, c) => sum + (c.participantCount || 0), 0);
+  const freeCamps        = camps.filter((c) => !c.fees || c.fees === 0).length;
+  const joinedCount      = joinedCampIds.size;
 
   const handleJoin = async (camp) => {
     if (!user) {
       toast.error("Please login to join a camp");
       return;
     }
-
     if (camp.participantCount >= camp.maxParticipants) return;
 
     Swal.fire({
@@ -111,12 +125,12 @@ const AvailableCamps = () => {
       if (result.isConfirmed) {
         try {
           await axiosSecure.post("/registrations", {
-            campId:        camp._id,
-            campName:      camp.name,
-            fees:          camp.fees,
-            location:      camp.location,
-            startDateTime: camp.startDateTime,
-            endDateTime:   camp.endDateTime,
+            campId:           camp._id,
+            campName:         camp.name,
+            fees:             camp.fees,
+            location:         camp.location,
+            startDateTime:    camp.startDateTime,
+            endDateTime:      camp.endDateTime,
             participantEmail: user.email,
             participantName:  user.displayName,
             organizerEmail:   camp.organizerEmail,
@@ -128,19 +142,30 @@ const AvailableCamps = () => {
           // increment participant count
           await axiosSecure.patch(`/camps/${camp._id}/join`);
 
-          Swal.fire({
+          // invalidate so joined badge updates immediately
+          queryClient.invalidateQueries(["my-registrations", user?.email]);
+          queryClient.invalidateQueries(["camps"]);
+
+          await Swal.fire({
             title: "Joined!",
-            text: `You have successfully joined ${camp.name}.`,
+            html: `<p style="color:rgba(240,244,255,0.6);font-size:14px;">
+              You have successfully joined <strong style="color:#5EC8E0">${camp.name}</strong>.
+            </p>`,
             icon: "success",
             background: "#10152A",
             color: "#F0F4FF",
             confirmButtonColor: "#116878",
-            confirmButtonText: "Done",
+            confirmButtonText: "View My Camps",
+            showCancelButton: true,
+            cancelButtonText: "Stay Here",
+            cancelButtonColor: "#1A2240",
+          }).then((r) => {
+            if (r.isConfirmed) {
+              navigate("/dashboard/registered-camps");
+            }
           });
         } catch (err) {
-          toast.error(
-            err?.response?.data?.message || "Failed to join camp"
-          );
+          toast.error(err?.response?.data?.message || "Failed to join camp");
         }
       }
     });
@@ -176,11 +201,11 @@ const AvailableCamps = () => {
             Discover free and affordable medical camps near you — search,
             filter, and join in seconds.
           </p>
+
+          {/* ── stats strip ── */}
           <div className="ac__stats">
             <div>
-              <div className="ac__stat-num ac__stat-num--teal">
-                {activeCamps}
-              </div>
+              <div className="ac__stat-num ac__stat-num--teal">{activeCamps}</div>
               <div className="ac__stat-label">Active Camps</div>
             </div>
             <div className="ac__stat-divider" />
@@ -193,21 +218,28 @@ const AvailableCamps = () => {
               <div className="ac__stat-num">{camps.length}</div>
               <div className="ac__stat-label">Total Camps</div>
             </div>
+            <div className="ac__stat-divider" />
+            <div>
+              <div className="ac__stat-num ac__stat-num--green">{freeCamps}</div>
+              <div className="ac__stat-label">Free Camps</div>
+            </div>
+            {user && (
+              <>
+                <div className="ac__stat-divider" />
+                <div>
+                  <div className="ac__stat-num ac__stat-num--purple">{joinedCount}</div>
+                  <div className="ac__stat-label">You've Joined</div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
 
       {/* ── controls ── */}
       <div className="ac__controls">
-
-        {/* search */}
         <div className="ac__search">
-          <svg
-            className="ac__search-icon"
-            width="16" height="16"
-            viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" strokeWidth="1.5"
-          >
+          <svg className="ac__search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
           </svg>
@@ -219,7 +251,6 @@ const AvailableCamps = () => {
           />
         </div>
 
-        {/* sort */}
         <div className="ac__sort">
           <span className="ac__sort-label">Sort</span>
           <select
@@ -234,7 +265,6 @@ const AvailableCamps = () => {
           </select>
         </div>
 
-        {/* layout toggle */}
         <div className="ac__layout-toggle">
           <button
             className={`ac__layout-btn ${layout === 3 ? "ac__layout-btn--active" : ""}`}
@@ -258,36 +288,28 @@ const AvailableCamps = () => {
             </svg>
           </button>
         </div>
-
       </div>
 
       {/* ── grid ── */}
       <div className={`ac__grid ${layout === 2 ? "ac__grid--two" : ""}`}>
-
         {isLoading ? (
-          Array.from({ length: 6 }).map((_, i) => (
-            <SkeletonCard key={i} />
-          ))
+          Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
         ) : displayed.length === 0 ? (
           <div className="ac__empty">
             <div className="ac__empty-title">No camps found</div>
-            <div className="ac__empty-sub">
-              Try adjusting your search or check back later
-            </div>
+            <div className="ac__empty-sub">Try adjusting your search or check back later</div>
           </div>
         ) : (
           displayed.map((camp) => {
-            const isFull = camp.participantCount >= camp.maxParticipants;
-            const pct = camp.maxParticipants
-              ? Math.min(
-                  (camp.participantCount / camp.maxParticipants) * 100,
-                  100
-                )
+            const isFull    = camp.participantCount >= camp.maxParticipants;
+            const isJoined  = joinedCampIds.has(camp._id);
+            const pct       = camp.maxParticipants
+              ? Math.min((camp.participantCount / camp.maxParticipants) * 100, 100)
               : 0;
-            const initial = camp.organizerName?.[0]?.toUpperCase() || "O";
+            const initial   = camp.organizerName?.[0]?.toUpperCase() || "O";
 
             return (
-              <div key={camp._id} className="ac__card">
+              <div key={camp._id} className={`ac__card ${isJoined ? "ac__card--joined" : ""}`}>
 
                 {/* image */}
                 <div className="ac__card-img">
@@ -304,17 +326,13 @@ const AvailableCamps = () => {
                   <div className="ac__card-img-overlay" />
 
                   {/* status */}
-                  <div
-                    className={`ac__card-status ${isFull ? "ac__card-status--full" : "ac__card-status--active"}`}
-                  >
+                  <div className={`ac__card-status ${isFull ? "ac__card-status--full" : isJoined ? "ac__card-status--joined" : "ac__card-status--active"}`}>
                     <span className="ac__card-status-dot" />
-                    {isFull ? "Full" : "Active"}
+                    {isFull ? "Full" : isJoined ? "Joined" : "Active"}
                   </div>
 
                   {/* fees */}
-                  <div
-                    className={`ac__card-fees ${camp.fees === 0 ? "ac__card-fees--free" : ""}`}
-                  >
+                  <div className={`ac__card-fees ${camp.fees === 0 ? "ac__card-fees--free" : ""}`}>
                     {camp.fees === 0 ? "Free" : `$${camp.fees}`}
                   </div>
                 </div>
@@ -322,9 +340,7 @@ const AvailableCamps = () => {
                 {/* body */}
                 <div className="ac__card-body">
                   <div className="ac__card-name">{camp.name}</div>
-                  <div className="ac__card-professional">
-                    {camp.healthcareProfessional}
-                  </div>
+                  <div className="ac__card-professional">{camp.healthcareProfessional}</div>
 
                   <div className="ac__card-meta">
                     <div className="ac__card-meta-row">
@@ -333,7 +349,7 @@ const AvailableCamps = () => {
                         <path d="M16 2v4M8 2v4M3 10h18" />
                       </svg>
                       <span className="ac__card-meta-text">
-                        <span>{formatDateRange(camp.startDateTime, camp.endDateTime)}</span>
+                        {formatDateRange(camp.startDateTime, camp.endDateTime)}
                         {" · "}
                         {formatTimeRange(camp.startDateTime, camp.endDateTime)}
                       </span>
@@ -343,18 +359,14 @@ const AvailableCamps = () => {
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
                         <circle cx="12" cy="9" r="2.5" />
                       </svg>
-                      <span className="ac__card-meta-text">
-                        <span>{camp.location}</span>
-                      </span>
+                      <span className="ac__card-meta-text">{camp.location}</span>
                     </div>
                   </div>
 
-                  {/* participants */}
+                  {/* participants progress */}
                   <div className="ac__card-participants">
                     <div className="ac__card-participants-top">
-                      <span className="ac__card-participants-label">
-                        Participants
-                      </span>
+                      <span className="ac__card-participants-label">Participants</span>
                       <span className="ac__card-participants-count">
                         <span>{camp.participantCount}</span> / {camp.maxParticipants}
                       </span>
@@ -371,20 +383,27 @@ const AvailableCamps = () => {
                 {/* footer */}
                 <div className="ac__card-footer">
                   <div className="ac__card-organizer">
-                    <div className="ac__card-organizer-avatar">
-                      {initial}
-                    </div>
-                    <span className="ac__card-organizer-name">
-                      {camp.organizerName}
-                    </span>
+                    <div className="ac__card-organizer-avatar">{initial}</div>
+                    <span className="ac__card-organizer-name">{camp.organizerName}</span>
                   </div>
-                  <button
-                    className={`ac__btn-join ${isFull ? "ac__btn-join--full" : ""}`}
-                    onClick={() => !isFull && handleJoin(camp)}
-                    disabled={isFull}
-                  >
-                    {isFull ? "Camp Full" : "Join Camp"}
-                  </button>
+
+                  {isJoined ? (
+                    <button
+                      className="ac__btn-join ac__btn-join--joined"
+                      onClick={() => navigate("/dashboard/registered-camps")}
+                    >
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      View Camp
+                    </button>
+                  ) : (
+                    <button
+                      className={`ac__btn-join ${isFull ? "ac__btn-join--full" : ""}`}
+                      onClick={() => !isFull && handleJoin(camp)}
+                      disabled={isFull}
+                    >
+                      {isFull ? "Camp Full" : "Join Camp"}
+                    </button>
+                  )}
                 </div>
 
               </div>

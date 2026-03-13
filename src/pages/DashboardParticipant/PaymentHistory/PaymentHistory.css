@@ -1,0 +1,147 @@
+/* ══════════════════════════════
+   PAYMENT HISTORY
+   ══════════════════════════════ */
+
+.ph__loading {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  min-height: 400px; font-family: 'Teko', sans-serif; font-size: 11px;
+  letter-spacing: 5px; text-transform: uppercase; color: rgba(240,244,255,0.2);
+}
+.ph__spinner {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid rgba(160,100,220,0.15);
+  border-top-color: #a06ee0;
+  animation: phSpin 0.8s linear infinite; flex-shrink: 0;
+}
+@keyframes phSpin { to { transform: rotate(360deg); } }
+
+/* ── header ── */
+.ph { padding: 0; }
+.ph__header { margin-bottom: 28px; }
+.ph__tag { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ph__tag-line { width: 28px; height: 1px; background: linear-gradient(90deg, #a06ee0, transparent); }
+.ph__tag-text { font-family: 'Teko', sans-serif; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: #a06ee0; }
+.ph__title { font-family: 'Teko', sans-serif; font-size: 48px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; color: rgba(240,244,255,1); line-height: 1; margin-bottom: 8px; }
+.ph__sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: rgba(240,244,255,0.35); }
+
+/* ── stats ── */
+.ph__stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-bottom: 26px;
+}
+.ph__stat {
+  background: #10152A; border: 1px solid rgba(240,244,255,0.06);
+  border-radius: 18px; padding: 22px 24px;
+  display: flex; align-items: center; gap: 16px;
+  position: relative; overflow: hidden;
+}
+.ph__stat::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(160,100,220,0.35), transparent);
+}
+.ph__stat-icon {
+  width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.ph__stat-icon--teal   { background: rgba(34,170,204,0.08);  border: 1px solid rgba(34,170,204,0.18);  }
+.ph__stat-icon--green  { background: rgba(94,212,160,0.08);  border: 1px solid rgba(94,212,160,0.18);  }
+.ph__stat-icon--purple { background: rgba(160,100,220,0.08); border: 1px solid rgba(160,100,220,0.18); }
+.ph__stat-num { font-family: 'Teko', sans-serif; font-size: 36px; font-weight: 400; letter-spacing: 2px; color: rgba(240,244,255,1); line-height: 1; }
+.ph__stat-num--green { color: #5ed4a0; }
+.ph__stat-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(240,244,255,0.2); margin-top: 4px; }
+
+/* ── toolbar ── */
+.ph__toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; margin-bottom: 16px;
+}
+.ph__search {
+  display: flex; align-items: center; gap: 10px;
+  background: #10152A; border: 1px solid rgba(240,244,255,0.1);
+  border-radius: 100px; padding: 10px 18px;
+  flex: 1; max-width: 420px; color: rgba(240,244,255,0.3);
+}
+.ph__search input {
+  background: transparent; border: none; outline: none;
+  font-family: 'Geologica', sans-serif; font-size: 12px;
+  font-weight: 300; color: rgba(240,244,255,0.8); width: 100%;
+}
+.ph__search input::placeholder { color: rgba(240,244,255,0.2); }
+.ph__count {
+  font-family: 'Teko', sans-serif; font-size: 11px;
+  letter-spacing: 3px; text-transform: uppercase; color: rgba(240,244,255,0.18);
+}
+
+/* ── card + table ── */
+.ph__card {
+  background: #10152A; border: 1px solid rgba(240,244,255,0.06);
+  border-radius: 20px; overflow: hidden; position: relative;
+}
+.ph__card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, #a06ee0, transparent);
+  box-shadow: 0 0 20px rgba(160,100,220,0.1);
+}
+.ph__table { width: 100%; border-collapse: collapse; }
+.ph__table thead tr { border-bottom: 1px solid rgba(240,244,255,0.06); }
+.ph__table th {
+  padding: 14px 20px; font-family: 'Teko', sans-serif;
+  font-size: 10px; font-weight: 400; letter-spacing: 4px;
+  text-transform: uppercase; color: rgba(240,244,255,0.2);
+  text-align: left; white-space: nowrap;
+}
+.ph__table tbody tr {
+  border-bottom: 1px solid rgba(240,244,255,0.03);
+  transition: background 0.18s;
+}
+.ph__table tbody tr:last-child { border-bottom: none; }
+.ph__table tbody tr:hover { background: rgba(240,244,255,0.025); }
+.ph__table td { padding: 18px 20px; vertical-align: middle; }
+
+.ph__num {
+  font-family: 'Teko', sans-serif; font-size: 11px;
+  letter-spacing: 2px; color: rgba(240,244,255,0.2);
+}
+.ph__camp-name {
+  font-size: 13px; font-weight: 400;
+  color: rgba(240,244,255,1); margin-bottom: 3px;
+}
+.ph__participant { font-size: 10px; color: rgba(240,244,255,0.25); }
+
+.ph__txn-id {
+  font-family: monospace; font-size: 11px;
+  color: rgba(240,244,255,0.3); letter-spacing: 0.5px;
+  max-width: 220px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+}
+.ph__date { font-size: 12px; color: rgba(240,244,255,0.5); }
+.ph__amount {
+  font-family: 'Teko', sans-serif; font-size: 20px;
+  font-weight: 400; letter-spacing: 1px; color: #5EC8E0;
+}
+
+/* badge */
+.ph__badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 100px;
+  font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
+}
+.ph__badge-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.ph__badge--paid {
+  background: rgba(94,212,160,0.08); border: 1px solid rgba(94,212,160,0.2); color: #5ed4a0;
+}
+
+/* empty */
+.ph__empty { padding: 64px 24px; text-align: center; }
+.ph__empty-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: #1A2240; border: 1px solid rgba(240,244,255,0.06);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px;
+}
+.ph__empty-title {
+  font-family: 'Teko', sans-serif; font-size: 18px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(240,244,255,0.3); margin-bottom: 8px;
+}
+.ph__empty-sub { font-size: 12px; color: rgba(240,244,255,0.2); }

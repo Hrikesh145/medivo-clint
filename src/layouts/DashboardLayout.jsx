@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
 import useRole from "../hooks/useRole";
@@ -27,6 +27,7 @@ const getPageTitle = (pathname) => {
   if (pathname.includes("/dashboard/payment-history"))   return "Payment History";
   if (pathname.includes("/dashboard/profile"))           return "Profile";
   if (pathname.includes("/dashboard/update-camp"))       return "Update Camp";
+  if (pathname.includes("/dashboard/payment"))           return "Payment";
   return "Dashboard";
 };
 
@@ -35,6 +36,18 @@ const DashboardLayout = () => {
   const { role: userRole, roleLoading } = useRole();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // ── role-based redirect when landing on bare /dashboard
+  useEffect(() => {
+    if (roleLoading) return;
+    if (location.pathname === "/dashboard" || location.pathname === "/dashboard/") {
+      if (userRole === "organizer") {
+        navigate("/dashboard/manage-camps", { replace: true });
+      } else {
+        navigate("/dashboard/analytics", { replace: true });
+      }
+    }
+  }, [userRole, roleLoading, location.pathname, navigate]);
 
   const links      = userRole === "organizer" ? ORGANIZER_LINKS  : PARTICIPANT_LINKS;
   const roleLabel  = userRole === "organizer" ? "Organizer"      : "Participant";
